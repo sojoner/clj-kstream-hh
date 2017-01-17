@@ -1,6 +1,6 @@
 (defproject clj-kstream-hh "0.1.0-SNAPSHOT"
   :description "A Clojure example implementing a [KafkaStreams Applicationto compute the heavy hitters in a Kafka Topic"
-  :url "http://example.com/FIXME"
+  :url "git@github.com:sojoner/clj-kstream-hh.git"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
@@ -19,4 +19,8 @@
                                                     com.sun.jmdk/jmxtools
                                                     com.sun.jmx/jmxri]]]
   :aot :all
-  :main clj-kstream-hh.core)
+  :main clj-kstream-hh.core
+  :profiles {:uberjar {:aot :all}}
+  ;; As above, but for uberjar.
+  :uberjar-name "clj-kstream-hh.jar"
+  :jvm-opts ["-Xmx2g" "-server"])

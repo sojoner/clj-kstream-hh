@@ -60,7 +60,6 @@
 
 (defn ^Processor get-processor []
       (reify org.apache.kafka.streams.processor.Processor
-
         (init [this context]
           "Init method to initialize the Processor"
           (debug "Init HH Processor")
