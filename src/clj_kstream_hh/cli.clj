@@ -4,6 +4,8 @@
   ;; An option with a required argument
   [["-b" "--broker comma seperated" "The kafka brokers hosts"
     :validate [#(string? %1) "Must be a sth like HOST:PORT,HOST:PORT"]]
+   ["-z" "--zookeeper comma seperated" "The zookeeper hosts"
+    :validate [#(string? %1) "Must be a sth like HOST:PORT,HOST:PORT"]]
    ["-i" "--input-topic the topic name" "The input topic name"
     :validate [#(string? %1) "Must be a sth like NAME"]]
    ["-o" "--output-topic the topic name" "The output topic name"

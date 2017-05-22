@@ -25,7 +25,10 @@
            (org.apache.kafka.streams.state KeyValueStore Stores)
 
            (java.util Properties)
-           (java.util.function Function))
+           (java.util.function Function)
+           (kafka.admin RackAwareMode$Enforced$ AdminUtils)
+           (org.I0Itec.zkclient ZkConnection ZkClient)
+           (kafka.utils ZkUtils ZKStringSerializer$))
   (:gen-class))
 
 (def string_ser
@@ -109,7 +112,7 @@
         ))
 
 (defn- heavy-hitter-processor
-  "Main stream processor takes a configuration and a mapper function to apply."
+  "Main stream processor takes a configuration."
   [conf]
   (let [streamBuilder (-> (new TopologyBuilder)
                           (.addSource (:name conf) string_dser string_dser  (into-array [(:input-topic conf)]))
@@ -136,16 +139,30 @@
         streamBuilder
         (get-props conf)))))
 
+(defn check-topic [zookeeper topic]
+  (info "ZK:" zookeeper " Topic: " topic)
+  (try
+    (with-open [zkClient (new ZkClient zookeeper 10000 8000 ZKStringSerializer$/MODULE$)]
+      (let [zkUtils (new ZkUtils zkClient (new ZkConnection zookeeper), false)]
+        (AdminUtils/createTopic zkUtils topic, 1, 1, (new Properties), RackAwareMode$Enforced$/MODULE$)))
+    (catch Exception e
+      (error "Failed to create topic" e))))
+
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (cli/parse-opts args cli-def/cli-options)
         conf {:kafka-brokers         (:broker options)
+              :zookeeper-servers   (:zookeeper options)
               :input-topic (:input-topic options)
               :output-topic   (:output-topic options)
               :window-size  (* 60000 (:window-size options)) ; get to milliseconds
               :name (:name options)}]
     (cond
       (:help options) (cli-def/exit 0 (cli-def/usage summary))
-      (not= (count (keys options)) 5) (cli-def/exit 1 (cli-def/usage summary))
+      (not= (count (keys options)) 6) (cli-def/exit 1 (cli-def/usage summary))
       (not (nil? errors)) (cli-def/exit 1 (cli-def/error-msg errors)))
+
+    (check-topic (:zookeeper-servers conf)(:input-topic conf))
+    (check-topic (:zookeeper-servers conf)(:output-topic conf))
+
     (swap! application-state assoc :window-size (:window-size conf))
     (heavy-hitter-processor conf)))

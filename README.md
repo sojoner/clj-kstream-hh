@@ -22,7 +22,8 @@ The topic you are consuming needs to have **^String** Keys and **^String** .json
     $lein check
 
 ## Build .jar
-
+    
+    $export LEIN_SNAPSHOTS_IN_RELEASE=true
     $lein uberjar
 
 ## Build .container
@@ -32,16 +33,16 @@ The topic you are consuming needs to have **^String** Keys and **^String** .json
 
 ## Usage Leiningen
 
-    $lein run --broker kafka-broker:9092 --input-topic mapped-test-json --output-topic heavy-hitters  --window-size 1 --name stream-hh
+    $lein run --broker kafka-broker:9092 --zookeeper zookeeper:2181 --input-topic mapped-test-json --output-topic heavy-hitters  --window-size 1 --name stream-hh
 
 ## Usage java
 
-    $java -jar clj-kstream-hh.jar --broker kafka-broker:9092 --input-topic mapped-test-json --output-topic heavy-hitters  --window-size 1 --name stream-hh
+    $java -jar clj-kstream-hh.jar --broker kafka-broker:9092 --zookeeper zookeeper:2181 --input-topic mapped-test-json --output-topic heavy-hitters  --window-size 1 --name stream-hh
 
 ## Usage docker
 
-    $docker run -t -i <BUILD-HASH> --network cljkstream_network --broker kafka-broker:9092 --input-topic mapped-test-json --output-topic heavy-hitters  --window-size 1 --name stream-hh
-    $docker run -t -i bb0d4cd5b6fc --network cljkstream_network --broker kafka-broker:9092 --input-topic mapped-test-json --output-topic heavy-hitters  --window-size 1 --name stream-hh
+    $docker run -t -i <BUILD-HASH> --network cljkstream_network --broker kafka-broker:9092 --zookeeper zookeeper:2181 --input-topic mapped-test-json --output-topic heavy-hitters  --window-size 1 --name stream-hh
+    $docker run -t -i bb0d4cd5b6fc --network cljkstream_network --broker kafka-broker:9092 --zookeeper zookeeper:2181 --input-topic mapped-test-json --output-topic heavy-hitters  --window-size 1 --name stream-hh
      
 
 

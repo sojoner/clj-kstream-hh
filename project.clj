@@ -1,4 +1,4 @@
-(defproject clj-kstream-hh "0.1.0-SNAPSHOT"
+(defproject clj-kstream-hh "0.3.0"
   :description "A Clojure example implementing a [KafkaStreams Applicationto compute the heavy hitters in a Kafka Topic"
   :url "git@github.com:sojoner/clj-kstream-hh.git"
   :license {:name "Eclipse Public License"
@@ -6,7 +6,8 @@
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/tools.cli "0.3.5"]
-                 [org.apache.kafka/kafka_2.11 "0.10.0.1"]
+                 [org.apache.kafka/kafka_2.10 "0.10.0.1"]
+                 [com.101tec/zkclient "0.9"]
                  ;; https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams
                  [org.apache.kafka/kafka-streams "0.10.0.1"]
                  ;; Heavy Hitter
