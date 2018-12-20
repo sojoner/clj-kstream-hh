@@ -28,7 +28,9 @@ build:
   - mv target/clj-kstream-hh.jar deploy/
   script:
   - echo "{\"auths\":{\"wharf.gaikai.org\":{\"username\":\"$wharf_user\",\"password\":\"$wharf_token\"}}}" > /kaniko/.docker/config.json
-  - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/deploy/Dockerfile --destination $CI_REGISTRY_IMAG
+  - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/deploy/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+  only:
+  - tags
   tags:
   - ci
   - docker
