@@ -1,4 +1,4 @@
-(defproject clj-kstream-hh "0.3.1-SNAPSHOT"
+(defproject clj-kstream-hh "0.3.1"
   :description "A Clojure example implementing a [KafkaStreams Applicationto compute the heavy hitters in a Kafka Topic"
   :url "git@github.com:sojoner/clj-kstream-hh.git"
   :license {:name "Eclipse Public License"
