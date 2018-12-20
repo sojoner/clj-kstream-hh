@@ -1,0 +1,32 @@
+stages:
+- package
+- docker
+
+package:
+  before_script:
+  - echo "MAVEN_OPTS=\"-Djavax.net.ssl.trustStore=truststore.pem -Djavax.net.ssl.trustStorePassword=123456\"" > ~/.mavenrc
+  - mkdir -p /root/.m2
+  - cp settings.xml /root/.m2/settings.xml
+  - export LEIN_SNAPSHOTS_IN_RELEASE=true
+  stage: package
+  image: dock.gaikai.org/htonnies/lein:2.8.1
+  script:
+  - lein uberjar
+  artifacts:
+    paths:
+    - target/clj-kstream-hh.jar
+  tags:
+  - ait1-dev
+
+build:
+  dependencies:
+  - package
+  stage: docker
+  before_script:
+  - mv target/clj-kstream-hh.jar deploy/
+  - docker login wharf.gaikai.org --username $wharf_user --password $wharf_token
+  script:
+  - docker build -t wharf.gaikai.org/htonnies/clj-kstream-hh deploy/
+  tags:
+  - ci
+  - docker
